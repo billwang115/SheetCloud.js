@@ -36,10 +36,13 @@ const SheetGenerator = (options) => {
     const sheetContainer = document.createElement("div");
     sheetContainer.className = "sheetContainer";
     sheetContainer.appendChild(sheet);
-    const notesElement = getNotesListElement();
-    sheetContainer.appendChild(notesElement);
 
     _self.sheet = sheetContainer;
+  };
+
+  _self.makeNotesList = () => {
+    const notesElement = getNotesListElement();
+    _self.sheet !== null && _self.sheet.appendChild(notesElement);
   };
 
   // private functions
@@ -62,7 +65,55 @@ const SheetGenerator = (options) => {
     listsElement.className = "notesList";
     listsContainer.appendChild(listsElement);
 
+    const list = generateNotesListsIcons(loadListsIcons());
+    list.forEach((element) => {
+      listsElement.appendChild(element);
+    });
+
     return listsContainer;
+  };
+
+  const loadListsIcons = () => {
+    let icons = {};
+    icons.wholeNote = "js/assets/whole_note.png";
+    icons.halfNote = "js/assets/half_note.png";
+    icons.quarterNote = "js/assets/quarter_note.png";
+    icons.eighthNote = "js/assets/eighth_note.png";
+    icons.sixteenthNote = "js/assets/sixteenth_note.png";
+    return icons;
+  };
+
+  const generateNotesListsIcons = (icons) => {
+    let iconsArray = Object.entries(icons).map(([key, value]) => {
+      const icon = document.createElement("img");
+      icon.src = value;
+      icon.alt = key;
+      icon.draggable = true;
+      icon.className = "notesListIcon";
+      return icon;
+    });
+
+    let iconsContainerArray = iconsArray.map((element) => {
+      const rowItem = document.createElement("div");
+      rowItem.className = "notesListRowItem";
+      rowItem.appendChild(element);
+      return rowItem;
+    });
+
+    let listRows = iconsContainerArray.map((element, index) => {
+      if (index % 2 === 0) {
+        const row = document.createElement("div");
+        row.className = "notesListRow";
+        row.appendChild(element);
+        index < iconsContainerArray.length - 1 &&
+          row.appendChild(iconsContainerArray[index + 1]);
+        return row;
+      }
+    });
+
+    listRows = listRows.filter((element) => element !== undefined);
+
+    return listRows;
   };
 
   return _self;
