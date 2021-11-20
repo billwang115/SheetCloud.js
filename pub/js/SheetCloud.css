@@ -1,0 +1,33 @@
+.sheetContainer {
+  display: flex;
+  align-items: center;
+  column-gap: 60px;
+}
+
+.sheet {
+  flex-basis: 80%;
+  min-width: 400px;
+  border-left: 3px solid black;
+  border-right: 3px solid black;
+}
+
+.line {
+  border-width: 0px;
+  border-top: 3px solid black;
+  margin: 0px;
+}
+
+.space {
+  height: 20px;
+}
+
+.notesListContainer {
+  flex-basis: 20%;
+  min-width: 300px;
+}
+
+.notesList {
+  border-radius: 10px;
+  background-color: #ededed;
+  height: 350px;
+}
