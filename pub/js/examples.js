@@ -2,7 +2,7 @@
 "use strict";
 const sg = SheetGenerator({});
 sg.makeSheet();
-sg.makeNotesList();
+sg.enableEditing(true);
 const sheetContainer = document.createElement("div");
 sheetContainer.style = "width:85%; margin: 10px auto";
 sheetContainer.appendChild(sg.sheet);

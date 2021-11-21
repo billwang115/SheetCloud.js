@@ -12,6 +12,8 @@ const SheetGenerator = (options) => {
     upper: 4, //default
     lower: 4,
   };
+  _self.editingEnabled = false;
+  _self.notesOptions = [];
 
   // functions
   _self.makeSheet = () => {
@@ -40,9 +42,14 @@ const SheetGenerator = (options) => {
     _self.sheet = sheetContainer;
   };
 
-  _self.makeNotesList = () => {
-    const notesElement = getNotesListElement();
-    _self.sheet !== null && _self.sheet.appendChild(notesElement);
+  _self.enableEditing = (enabled) => {
+    if (enabled) {
+      _self.editingEnabled = true;
+      makeNotesList();
+      enableNotesDragging();
+    } else {
+      _self.editingEnabled = false;
+    }
   };
 
   // private functions
@@ -88,10 +95,12 @@ const SheetGenerator = (options) => {
       const icon = document.createElement("img");
       icon.src = value;
       icon.alt = key;
-      icon.draggable = true;
+      icon.draggable = false;
       icon.className = "notesListIcon";
       return icon;
     });
+
+    _self.notesOptions = iconsArray;
 
     let iconsContainerArray = iconsArray.map((element) => {
       const rowItem = document.createElement("div");
@@ -114,6 +123,50 @@ const SheetGenerator = (options) => {
     listRows = listRows.filter((element) => element !== undefined);
 
     return listRows;
+  };
+
+  const makeNotesList = () => {
+    const notesElement = getNotesListElement();
+    _self.sheet !== null && _self.sheet.appendChild(notesElement);
+  };
+
+  const enableNotesDragging = () => {
+    if (_self.editingEnabled) {
+      _self.notesOptions.forEach((element) => {
+        element.onmousedown = onMouseDown;
+      });
+    }
+  };
+
+  const onMouseDown = (event) => {
+    // inspired by https://javascript.info/mouse-drag-and-drop
+    const currentImg = event.target;
+    const floatingImg = document.createElement("img");
+    floatingImg.src = currentImg.src;
+    floatingImg.alt = currentImg.alt;
+    floatingImg.draggable = false;
+    floatingImg.style = "position:absolute; z-index: 999;";
+    floatingImg.className = currentImg.className;
+    const body = document.querySelector("body");
+    body.appendChild(floatingImg);
+
+    const shiftX = event.clientX - currentImg.getBoundingClientRect().left;
+    const shiftY = event.clientY - currentImg.getBoundingClientRect().top;
+    floatingImg.style.left = event.pageX - shiftX + "px";
+    floatingImg.style.top = event.pageY - shiftY + "px";
+
+    const onMouseMove = (event) => {
+      floatingImg.style.left = event.pageX - shiftX + "px";
+      floatingImg.style.top = event.pageY - shiftY + "px";
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+
+    floatingImg.onmouseup = () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      floatingImg.onmouseup = null;
+      body.removeChild(floatingImg);
+    };
   };
 
   return _self;

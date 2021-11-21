@@ -7,13 +7,13 @@
 .sheet {
   flex-basis: 80%;
   min-width: 500px;
-  border-left: 3px solid black;
-  border-right: 3px solid black;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
 }
 
 .line {
   border-width: 0px;
-  border-top: 3px solid black;
+  border-top: 2px solid black;
   margin: 0px;
 }
 
@@ -34,6 +34,7 @@
   flex-direction: column;
   row-gap: 22px;
   padding: 20px 0px;
+  user-select: none;
 }
 
 .notesListIcon {
