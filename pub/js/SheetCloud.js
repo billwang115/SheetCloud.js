@@ -3,6 +3,7 @@
 const SheetGenerator = (options) => {
   // variables
   const _self = {}; // object to return
+  _self.mainView = document.createElement(null);
   _self.sheet = document.createElement(null);
   _self.clefs = {
     treble: false,
@@ -14,6 +15,7 @@ const SheetGenerator = (options) => {
   };
   _self.editingEnabled = false;
   _self.notesOptions = [];
+  _self.placedNotes = [];
 
   // functions
   _self.makeSheet = () => {
@@ -34,12 +36,13 @@ const SheetGenerator = (options) => {
     sheet.appendChild(line.cloneNode(true));
     sheet.appendChild(space.cloneNode(true));
     sheet.appendChild(line.cloneNode(true));
+    _self.sheet = sheet;
 
     const sheetContainer = document.createElement("div");
     sheetContainer.className = "sheetContainer";
     sheetContainer.appendChild(sheet);
 
-    _self.sheet = sheetContainer;
+    _self.mainView = sheetContainer;
   };
 
   _self.enableEditing = (enabled) => {
@@ -127,7 +130,7 @@ const SheetGenerator = (options) => {
 
   const makeNotesList = () => {
     const notesElement = getNotesListElement();
-    _self.sheet !== null && _self.sheet.appendChild(notesElement);
+    _self.sheet !== null && _self.mainView.appendChild(notesElement);
   };
 
   const enableNotesDragging = () => {
@@ -141,12 +144,8 @@ const SheetGenerator = (options) => {
   const onMouseDown = (event) => {
     // inspired by https://javascript.info/mouse-drag-and-drop
     const currentImg = event.target;
-    const floatingImg = document.createElement("img");
-    floatingImg.src = currentImg.src;
-    floatingImg.alt = currentImg.alt;
-    floatingImg.draggable = false;
+    const floatingImg = currentImg.cloneNode(true);
     floatingImg.style = "position:absolute; z-index: 999;";
-    floatingImg.className = currentImg.className;
     const body = document.querySelector("body");
     body.appendChild(floatingImg);
 
@@ -165,8 +164,39 @@ const SheetGenerator = (options) => {
     floatingImg.onmouseup = () => {
       document.removeEventListener("mousemove", onMouseMove);
       floatingImg.onmouseup = null;
+      handleNotesDrop(floatingImg);
       body.removeChild(floatingImg);
     };
+  };
+
+  const handleNotesDrop = (floatingNote) => {
+    _self.sheet.childNodes.forEach((element) => {
+      const sheetElementTop = element.getBoundingClientRect().top;
+      const sheetElementLeft = element.getBoundingClientRect().left;
+      const sheetElementWidth = element.getBoundingClientRect().width;
+      const sheetElementHeight = element.getBoundingClientRect().height;
+      const floatingNoteX = floatingNote.getBoundingClientRect().x;
+      const floatingNoteY = floatingNote.getBoundingClientRect().y;
+      const floatingNoteWidth = floatingNote.getBoundingClientRect().width;
+      const floatingNoteHeight = floatingNote.getBoundingClientRect().height;
+
+      const barPadding = 50;
+      if (
+        floatingNoteX >= sheetElementLeft - barPadding &&
+        floatingNoteY >= sheetElementTop - barPadding &&
+        floatingNoteX + floatingNoteWidth <=
+          sheetElementLeft + sheetElementWidth &&
+        //floatingNoteY + floatingNoteHeight <= sheetElementTop + sheetElementHeight
+        floatingNoteY + floatingNoteHeight <=
+          _self.sheet.getBoundingClientRect().y +
+            _self.sheet.getBoundingClientRect().height +
+            barPadding
+      ) {
+        placedNotes.push(floatingNote.cloneNode(true));
+        _self.sheet.appendChild(floatingNote.cloneNode(true));
+        return false;
+      }
+    });
   };
 
   return _self;
