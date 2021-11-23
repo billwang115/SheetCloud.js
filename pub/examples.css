@@ -1,0 +1,15 @@
+.pageHeading {
+  text-align: center;
+  font-size: 36px;
+  line-height: 48px;
+}
+
+.instructionsContainer {
+  width: 85%;
+  margin: auto;
+}
+
+.instructionsParagraph {
+  font-size: 18px;
+  line-height: 22px;
+}
