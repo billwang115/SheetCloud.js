@@ -4,7 +4,6 @@ const SheetGenerator = (options) => {
   // variables
   const _self = {}; // object to return
   _self.mainView = document.createElement(null);
-  _self.sheet = document.createElement(null);
   _self.clefs = {
     treble: false,
     bass: false,
@@ -14,33 +13,25 @@ const SheetGenerator = (options) => {
     lower: 4,
   };
   _self.editingEnabled = false;
-  _self.notesOptions = [];
-  _self.placedNotes = [];
+
+  //private variables
+  let mainSheet = document.createElement(null);
+  let notesOptions = [];
+  let placedNotes = [];
 
   // functions
   _self.makeSheet = () => {
     setVariables();
 
-    const sheet = document.createElement("div");
-    sheet.className = "sheet";
-    const line = document.createElement("hr");
-    line.className = "line";
-    sheet.appendChild(line);
-    const space = document.createElement("div");
-    space.className = "space";
-    sheet.appendChild(space);
-    sheet.appendChild(line.cloneNode(true));
-    sheet.appendChild(space.cloneNode(true));
-    sheet.appendChild(line.cloneNode(true));
-    sheet.appendChild(space.cloneNode(true));
-    sheet.appendChild(line.cloneNode(true));
-    sheet.appendChild(space.cloneNode(true));
-    sheet.appendChild(line.cloneNode(true));
-    _self.sheet = sheet;
+    const staff = setStaffs();
+    mainSheet = document.createElement("div");
+    mainSheet.className = "sheet";
+    mainSheet.appendChild(staff);
+    setClefs();
 
     const sheetContainer = document.createElement("div");
     sheetContainer.className = "sheetContainer";
-    sheetContainer.appendChild(sheet);
+    sheetContainer.appendChild(mainSheet);
 
     _self.mainView = sheetContainer;
   };
@@ -62,6 +53,65 @@ const SheetGenerator = (options) => {
       ..._self.timeSignatures,
       ...options.timeSignatures,
     };
+  };
+
+  const setStaffs = () => {
+    const grandStaff = document.createElement("div");
+    grandStaff.className = "grandStaff";
+    const staff = document.createElement("div");
+    staff.className = "staff";
+    const line = document.createElement("hr");
+    line.className = "staffLine";
+    staff.appendChild(line);
+    const space = document.createElement("div");
+    space.className = "lineSpace";
+    staff.appendChild(space);
+    staff.appendChild(line.cloneNode(true));
+    staff.appendChild(space.cloneNode(true));
+    staff.appendChild(line.cloneNode(true));
+    staff.appendChild(space.cloneNode(true));
+    staff.appendChild(line.cloneNode(true));
+    staff.appendChild(space.cloneNode(true));
+    staff.appendChild(line.cloneNode(true));
+    grandStaff.appendChild(staff);
+
+    if (_self.clefs.treble && _self.clefs.bass) {
+      const lowerStaff = staff.cloneNode(true);
+      const staffSpace = document.createElement("div");
+      staffSpace.className = "staffSpace";
+      grandStaff.appendChild(staffSpace);
+      grandStaff.appendChild(lowerStaff);
+    }
+
+    return grandStaff;
+  };
+
+  const setClefs = () => {
+    const grandStaffList = mainSheet.getElementsByClassName("grandStaff");
+    Array.from(grandStaffList).forEach((grandStaff) => {
+      if (_self.clefs.treble) {
+        const upperStaff = grandStaff.childNodes[0];
+        const trebleClef = document.createElement("img");
+        trebleClef.src = "js/assets/treble_clef.png";
+        trebleClef.alt = "Treble-clef";
+        trebleClef.draggable = false;
+        trebleClef.className = "trebleClef";
+
+        upperStaff.appendChild(trebleClef);
+      }
+
+      if (_self.clefs.bass) {
+        let staffIndex = _self.clefs.treble ? 2 : 0;
+        const lowerStaff = grandStaff.childNodes[staffIndex];
+        const bassClef = document.createElement("img");
+        bassClef.src = "js/assets/bass_clef.png";
+        bassClef.alt = "Bass-clef";
+        bassClef.draggable = false;
+        bassClef.className = "bassClef";
+
+        lowerStaff.appendChild(bassClef);
+      }
+    });
   };
 
   const getNotesListElement = () => {
@@ -104,7 +154,7 @@ const SheetGenerator = (options) => {
       return icon;
     });
 
-    _self.notesOptions = iconsArray;
+    notesOptions = iconsArray;
 
     let iconsContainerArray = iconsArray.map((element) => {
       const rowItem = document.createElement("div");
@@ -131,12 +181,12 @@ const SheetGenerator = (options) => {
 
   const makeNotesList = () => {
     const notesElement = getNotesListElement();
-    _self.sheet !== null && _self.mainView.appendChild(notesElement);
+    mainSheet !== null && _self.mainView.appendChild(notesElement);
   };
 
   const enableNotesDragging = () => {
     if (_self.editingEnabled) {
-      _self.notesOptions.forEach((element) => {
+      notesOptions.forEach((element) => {
         element.onmousedown = onMouseDown;
       });
     }
@@ -171,32 +221,34 @@ const SheetGenerator = (options) => {
   };
 
   const handleNotesDrop = (floatingNote) => {
-    _self.sheet.childNodes.forEach((element) => {
-      const sheetElementTop = element.getBoundingClientRect().top;
-      const sheetElementLeft = element.getBoundingClientRect().left;
-      const sheetElementWidth = element.getBoundingClientRect().width;
-      const sheetElementHeight = element.getBoundingClientRect().height;
-      const floatingNoteX = floatingNote.getBoundingClientRect().x;
-      const floatingNoteY = floatingNote.getBoundingClientRect().y;
-      const floatingNoteWidth = floatingNote.getBoundingClientRect().width;
-      const floatingNoteHeight = floatingNote.getBoundingClientRect().height;
+    mainSheet.childNodes.forEach((sheet) => {
+      sheet.childNodes.forEach((element) => {
+        const sheetElementTop = element.getBoundingClientRect().top;
+        const sheetElementLeft = element.getBoundingClientRect().left;
+        const sheetElementWidth = element.getBoundingClientRect().width;
+        const sheetElementHeight = element.getBoundingClientRect().height;
+        const floatingNoteX = floatingNote.getBoundingClientRect().x;
+        const floatingNoteY = floatingNote.getBoundingClientRect().y;
+        const floatingNoteWidth = floatingNote.getBoundingClientRect().width;
+        const floatingNoteHeight = floatingNote.getBoundingClientRect().height;
 
-      const barPadding = 50;
-      if (
-        floatingNoteX >= sheetElementLeft - barPadding &&
-        floatingNoteY >= sheetElementTop - barPadding &&
-        floatingNoteX + floatingNoteWidth <=
-          sheetElementLeft + sheetElementWidth &&
-        //floatingNoteY + floatingNoteHeight <= sheetElementTop + sheetElementHeight
-        floatingNoteY + floatingNoteHeight <=
-          _self.sheet.getBoundingClientRect().y +
-            _self.sheet.getBoundingClientRect().height +
-            barPadding
-      ) {
-        placedNotes.push(floatingNote.cloneNode(true));
-        _self.sheet.appendChild(floatingNote.cloneNode(true));
-        return false;
-      }
+        const barPadding = 50;
+        if (
+          floatingNoteX >= sheetElementLeft - barPadding &&
+          floatingNoteY >= sheetElementTop - barPadding &&
+          floatingNoteX + floatingNoteWidth <=
+            sheetElementLeft + sheetElementWidth &&
+          //floatingNoteY + floatingNoteHeight <= sheetElementTop + sheetElementHeight
+          floatingNoteY + floatingNoteHeight <=
+            sheet.getBoundingClientRect().y +
+              sheet.getBoundingClientRect().height +
+              barPadding
+        ) {
+          placedNotes.push(floatingNote.cloneNode(true));
+          sheet.appendChild(floatingNote.cloneNode(true));
+          return false;
+        }
+      });
     });
   };
 
