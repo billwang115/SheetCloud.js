@@ -28,6 +28,7 @@ const SheetGenerator = (options) => {
     mainSheet.className = "sheet";
     mainSheet.appendChild(staff);
     setClefs();
+    setTime();
 
     const sheetContainer = document.createElement("div");
     sheetContainer.className = "sheetContainer";
@@ -73,6 +74,9 @@ const SheetGenerator = (options) => {
     staff.appendChild(line.cloneNode(true));
     staff.appendChild(space.cloneNode(true));
     staff.appendChild(line.cloneNode(true));
+    const leftSection = document.createElement("div");
+    leftSection.className = "staffLeftSection";
+    staff.appendChild(leftSection);
     grandStaff.appendChild(staff);
 
     if (_self.clefs.treble && _self.clefs.bass) {
@@ -97,7 +101,8 @@ const SheetGenerator = (options) => {
         trebleClef.draggable = false;
         trebleClef.className = "trebleClef";
 
-        upperStaff.appendChild(trebleClef);
+        const leftSection = upperStaff.querySelector(".staffLeftSection");
+        leftSection.appendChild(trebleClef);
       }
 
       if (_self.clefs.bass) {
@@ -109,9 +114,65 @@ const SheetGenerator = (options) => {
         bassClef.draggable = false;
         bassClef.className = "bassClef";
 
-        lowerStaff.appendChild(bassClef);
+        const leftSection = lowerStaff.querySelector(".staffLeftSection");
+        leftSection.appendChild(bassClef);
       }
     });
+  };
+
+  const setTime = () => {
+    const grandStaffList = mainSheet.getElementsByClassName("grandStaff");
+    Array.from(grandStaffList).forEach((grandStaff) => {
+      const topNumber = document.createElement("img");
+      topNumber.src = getTimeImageSource(_self.timeSignatures.upper);
+      topNumber.alt = "top-number";
+      topNumber.draggable = false;
+      topNumber.className = "timeSignatureNumber";
+
+      const bottomNumber = document.createElement("img");
+      bottomNumber.src = getTimeImageSource(_self.timeSignatures.lower);
+      bottomNumber.alt = "bottom-number";
+      bottomNumber.draggable = false;
+      bottomNumber.className = "timeSignatureNumber";
+
+      const timeSignatureContainer = document.createElement("div");
+      timeSignatureContainer.className = "timeSignatureContainer";
+      timeSignatureContainer.appendChild(topNumber);
+      timeSignatureContainer.appendChild(bottomNumber);
+
+      const upperStaff = grandStaff.childNodes[0];
+      const leftSection = upperStaff.querySelector(".staffLeftSection");
+      leftSection.appendChild(timeSignatureContainer);
+
+      if (_self.clefs.bass && _self.clefs.treble) {
+        const lowerStaff = grandStaff.childNodes[2];
+        const timeSignatureContainer2 = timeSignatureContainer.cloneNode(true);
+        const leftSection = lowerStaff.querySelector(".staffLeftSection");
+        leftSection.appendChild(timeSignatureContainer2);
+      }
+    });
+  };
+
+  const getTimeImageSource = (timeNumber) => {
+    if (timeNumber === 2) {
+      return "js/assets/time-2.png";
+    } else if (timeNumber === 3) {
+      return "js/assets/time-3.png";
+    } else if (timeNumber === 4) {
+      return "js/assets/time-4.png";
+    } else if (timeNumber === 6) {
+      return "js/assets/time-6.png";
+    } else if (timeNumber === 8) {
+      return "js/assets/time-8.png";
+    } else if (timeNumber === 9) {
+      return "js/assets/time-9.png";
+    } else if (timeNumber === 12) {
+      return "js/assets/time-12.png";
+    } else if (timeNumber === 16) {
+      return "js/assets/time-16.png";
+    } else {
+      return "js/assets/time-4.png";
+    }
   };
 
   const getNotesListElement = () => {

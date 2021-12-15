@@ -2,7 +2,7 @@
 "use strict";
 const sg = SheetGenerator({
   clefs: { treble: true, bass: true },
-  timeSignatures: { upper: 4, lower: 4 },
+  timeSignatures: { upper: 2, lower: 4 },
 });
 sg.makeSheet();
 sg.enableEditing(true);

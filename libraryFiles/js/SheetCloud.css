@@ -33,6 +33,14 @@
   height: 108px;
 }
 
+.staffLeftSection {
+  position: absolute;
+  left: 12px;
+  top: 0px;
+  height: 100%;
+  min-width: 70px;
+}
+
 .grandStaff {
   width: 100%;
   border-left: 1px solid black;
@@ -40,8 +48,9 @@
 }
 
 .trebleClef {
-  position: absolute;
-  left: 12px;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
   top: 50%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
@@ -51,11 +60,20 @@
 }
 
 .bassClef {
-  position: absolute;
-  left: 12px;
-  top: 0px;
   width: auto;
-  height: 82%;
+  height: 81%;
+  object-fit: contain;
+}
+
+.timeSignatureContainer {
+  display: inline-block;
+  height: 100%;
+  width: 30px;
+}
+
+.timeSignatureNumber {
+  width: auto;
+  height: 40%;
   object-fit: contain;
 }
 
