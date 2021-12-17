@@ -93,6 +93,9 @@ const SheetGenerator = (options) => {
       const lowerStaff = staff.cloneNode(true);
       const staffSpace = document.createElement("div");
       staffSpace.className = "staffSpace";
+      const leftSection = document.createElement("div");
+      leftSection.className = "staffLeftSection";
+      staffSpace.appendChild(leftSection);
       grandStaff.appendChild(staffSpace);
       grandStaff.appendChild(lowerStaff);
     }
@@ -299,36 +302,34 @@ const SheetGenerator = (options) => {
     Array.from(mainSheet.childNodes).every((grandStaff) => {
       let foundSpot = false; //bool representing note was found on a position on the sheet
       Array.from(grandStaff.childNodes).every((element) => {
-        const sheetElementTop = element.getBoundingClientRect().top;
-        const sheetElementLeft = element.getBoundingClientRect().left;
-        const sheetElementWidth = element.getBoundingClientRect().width;
-        const sheetElementHeight = element.getBoundingClientRect().height;
+        const staffElementTop = element.getBoundingClientRect().top;
+        const leftSection = element.querySelector(".staffLeftSection");
+        const leftSectionRight = leftSection.getBoundingClientRect().right;
+        const staffElementLeft = element.getBoundingClientRect().left;
+        const staffElementWidth = element.getBoundingClientRect().width;
+        const staffElementHeight = element.getBoundingClientRect().height;
         const floatingNoteX = floatingNote.getBoundingClientRect().x;
         const floatingNoteY = floatingNote.getBoundingClientRect().y;
         const floatingNoteWidth = floatingNote.getBoundingClientRect().width;
         const floatingNoteHeight = floatingNote.getBoundingClientRect().height;
 
-        const barPadding = 50;
+        const staffPadding = 50;
         if (
-          floatingNoteX >= sheetElementLeft - barPadding &&
-          floatingNoteY >= sheetElementTop - barPadding &&
+          floatingNoteX >= leftSectionRight &&
+          floatingNoteY >= staffElementTop - staffPadding &&
           floatingNoteX + floatingNoteWidth <=
-            sheetElementLeft + sheetElementWidth &&
+            staffElementLeft + staffElementWidth &&
           floatingNoteY + floatingNoteHeight <=
-            sheetElementTop + sheetElementHeight &&
-          floatingNoteY + floatingNoteHeight <=
-            element.getBoundingClientRect().y +
-              element.getBoundingClientRect().height +
-              barPadding
+            staffElementTop + staffElementHeight + staffPadding
         ) {
           const newNote = floatingNote.cloneNode(true);
           newNote.style.left =
             parseFloat(floatingNote.style.left) -
-            parseFloat(sheetElementLeft) +
+            parseFloat(staffElementLeft) +
             "px";
           newNote.style.top =
             parseFloat(floatingNote.style.top) -
-            parseFloat(sheetElementTop) +
+            parseFloat(staffElementTop) +
             "px";
           placedNotes.push(newNote);
           element.appendChild(newNote);
