@@ -283,6 +283,12 @@ const SheetGenerator = (options) => {
     floatingImg.style.left = event.pageX - shiftX + "px";
     floatingImg.style.top = event.pageY - shiftY + "px";
 
+    if (placedNotes.includes(currentImg)) {
+      //remove old image if it was already placed on the grid
+      placedNotes = placedNotes.filter((note) => note !== currentImg);
+      currentImg.parentNode.removeChild(currentImg);
+    }
+
     const onMouseMove = (event) => {
       floatingImg.style.left = event.pageX - shiftX + "px";
       floatingImg.style.top = event.pageY - shiftY + "px";
@@ -331,6 +337,7 @@ const SheetGenerator = (options) => {
             parseFloat(floatingNote.style.top) -
             parseFloat(staffElementTop) +
             "px";
+          newNote.onmousedown = onMouseDown;
           placedNotes.push(newNote);
           element.appendChild(newNote);
           foundSpot = true;
