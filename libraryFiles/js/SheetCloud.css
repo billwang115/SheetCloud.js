@@ -1,17 +1,21 @@
-.sheetContainer {
+.mainView {
   display: flex;
   column-gap: 60px;
 }
 
-.sheetContainer,
-.sheetContainer * {
+.mainView,
+.mainView * {
   box-sizing: border-box;
 }
 
-.sheet {
+.sheetContainer {
   flex-basis: 80%;
   min-width: 500px;
-  margin-top: 30px;
+  align-self: center;
+}
+
+.sheet {
+  padding: 30px 0px;
 }
 
 .sheetSpace {
@@ -59,12 +63,14 @@
   width: auto;
   height: 180%;
   object-fit: contain;
+  display: block;
 }
 
 .bassClef {
   width: auto;
   height: 81%;
   object-fit: contain;
+  display: block;
 }
 
 .timeSignatureContainer {
@@ -79,6 +85,25 @@
   width: auto;
   height: 50%;
   object-fit: contain;
+}
+
+.tempoContainer {
+  width: 100px;
+  margin-left: 80px;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: flex-end;
+  column-gap: 15px;
+}
+
+.tempoIcon {
+  width: 10px;
+  height: auto;
+}
+
+.tempoText {
+  font-size: 22px;
+  font-weight: 600;
 }
 
 .notesListContainer {
@@ -110,6 +135,7 @@
   max-width: 30px;
   max-height: 52px;
   object-fit: contain;
+  display: block;
 }
 .notesListIcon:hover {
   cursor: pointer;

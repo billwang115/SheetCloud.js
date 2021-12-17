@@ -14,6 +14,7 @@ const SheetGenerator = (options) => {
   };
   _self.editingEnabled = false;
   _self.numStaffs = 1;
+  _self.tempo = 100;
 
   //private variables
   let mainSheet = document.createElement(null);
@@ -36,14 +37,19 @@ const SheetGenerator = (options) => {
       }
     }
 
-    setClefs();
-    setTime();
-
     const sheetContainer = document.createElement("div");
     sheetContainer.className = "sheetContainer";
     sheetContainer.appendChild(mainSheet);
 
-    _self.mainView = sheetContainer;
+    setClefs();
+    _self.timeSignatures && setTime();
+    _self.tempo && setTempo();
+
+    const mainView = document.createElement("div");
+    mainView.className = "mainView";
+    mainView.appendChild(sheetContainer);
+
+    _self.mainView = mainView;
   };
 
   _self.enableEditing = (enabled) => {
@@ -59,11 +65,9 @@ const SheetGenerator = (options) => {
   // private functions
   const setVariables = () => {
     _self.clefs = { ..._self.clefs, ...options.clefs };
-    _self.timeSignatures = {
-      ..._self.timeSignatures,
-      ...options.timeSignatures,
-    };
+    _self.timeSignatures = options.timeSignatures;
     _self.numStaffs = options.numStaffs ? options.numStaffs : _self.numStaffs;
+    _self.tempo = options.tempo;
   };
 
   const setStaff = () => {
@@ -164,6 +168,24 @@ const SheetGenerator = (options) => {
         leftSection.appendChild(timeSignatureContainer2);
       }
     });
+  };
+
+  const setTempo = () => {
+    const sheetContainer = mainSheet.parentNode;
+    const tempoContainer = document.createElement("div");
+    tempoContainer.className = "tempoContainer";
+    const icon = document.createElement("img");
+    icon.src = "js/assets/quarter_note.png";
+    icon.alt = "tempo";
+    icon.draggable = false;
+    icon.className = "tempoIcon";
+    tempoContainer.appendChild(icon);
+    const text = document.createElement("span");
+    text.innerText = "  =  \xA0" + _self.tempo;
+    text.className = "tempoText";
+    tempoContainer.appendChild(text);
+
+    sheetContainer.insertBefore(tempoContainer, mainSheet);
   };
 
   const getTimeImageSource = (timeNumber) => {
