@@ -186,7 +186,7 @@ const SheetGenerator = (options) => {
   };
 
   const getNotesListElement = () => {
-    const listsContainer = document.createElement("span");
+    const listsContainer = document.createElement("div");
     listsContainer.className = "notesListContainer ";
     const heading = document.createElement("h3");
     heading.innerText = "Music Notes";
