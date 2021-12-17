@@ -95,7 +95,7 @@
 .notesList {
   border-radius: 10px;
   background-color: #e8f1f0;
-  height: 350px;
+  min-height: 350px;
   display: flex;
   flex-direction: column;
   row-gap: 36px;

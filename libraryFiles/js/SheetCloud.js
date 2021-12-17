@@ -209,9 +209,13 @@ const SheetGenerator = (options) => {
     let icons = {};
     icons.wholeNote = "js/assets/whole_note.png";
     icons.halfNote = "js/assets/half_note.png";
+    icons.halfNoteFlipped = "js/assets/half_note_flipped.png";
     icons.quarterNote = "js/assets/quarter_note.png";
+    icons.quarterNoteFlipped = "js/assets/quarter_note_flipped.png";
     icons.eighthNote = "js/assets/eighth_note.png";
+    icons.eighthNoteFlipped = "js/assets/eighth_note_flipped.png";
     icons.sixteenthNote = "js/assets/sixteenth_note.png";
+    icons.sixteenthNoteFlipped = "js/assets/sixteenth_note_flipped.png";
     return icons;
   };
 
