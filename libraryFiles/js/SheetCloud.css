@@ -36,6 +36,7 @@
 
 .staffSpace {
   height: 108px;
+  position: relative;
 }
 
 .staffLeftSection {

@@ -29,9 +29,11 @@ const SheetGenerator = (options) => {
     for (let i = 0; i < _self.numStaffs; i++) {
       const staff = setStaff();
       mainSheet.appendChild(staff);
-      const sheetSpace = document.createElement("div");
-      sheetSpace.className = "sheetSpace";
-      mainSheet.appendChild(sheetSpace);
+      if (i < _self.numStaffs - 1) {
+        const sheetSpace = document.createElement("div");
+        sheetSpace.className = "sheetSpace";
+        mainSheet.appendChild(sheetSpace);
+      }
     }
 
     setClefs();
@@ -290,8 +292,9 @@ const SheetGenerator = (options) => {
   };
 
   const handleNotesDrop = (floatingNote) => {
-    mainSheet.childNodes.forEach((sheet) => {
-      sheet.childNodes.forEach((element) => {
+    Array.from(mainSheet.childNodes).every((grandStaff) => {
+      let foundSpot = false; //bool representing note was found on a position on the sheet
+      Array.from(grandStaff.childNodes).every((element) => {
         const sheetElementTop = element.getBoundingClientRect().top;
         const sheetElementLeft = element.getBoundingClientRect().left;
         const sheetElementWidth = element.getBoundingClientRect().width;
@@ -307,17 +310,32 @@ const SheetGenerator = (options) => {
           floatingNoteY >= sheetElementTop - barPadding &&
           floatingNoteX + floatingNoteWidth <=
             sheetElementLeft + sheetElementWidth &&
-          //floatingNoteY + floatingNoteHeight <= sheetElementTop + sheetElementHeight
           floatingNoteY + floatingNoteHeight <=
-            sheet.getBoundingClientRect().y +
-              sheet.getBoundingClientRect().height +
+            sheetElementTop + sheetElementHeight &&
+          floatingNoteY + floatingNoteHeight <=
+            element.getBoundingClientRect().y +
+              element.getBoundingClientRect().height +
               barPadding
         ) {
-          placedNotes.push(floatingNote.cloneNode(true));
-          sheet.appendChild(floatingNote.cloneNode(true));
+          const newNote = floatingNote.cloneNode(true);
+          newNote.style.left =
+            parseFloat(floatingNote.style.left) -
+            parseFloat(sheetElementLeft) +
+            "px";
+          newNote.style.top =
+            parseFloat(floatingNote.style.top) -
+            parseFloat(sheetElementTop) +
+            "px";
+          placedNotes.push(newNote);
+          element.appendChild(newNote);
+          foundSpot = true;
           return false;
+        } else {
+          return true;
         }
       });
+
+      return !foundSpot;
     });
   };
 
