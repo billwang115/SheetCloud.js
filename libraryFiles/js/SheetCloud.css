@@ -12,6 +12,11 @@
 .sheet {
   flex-basis: 80%;
   min-width: 500px;
+  margin-top: 30px;
+}
+
+.sheetSpace {
+  height: 134px;
 }
 
 .staff {

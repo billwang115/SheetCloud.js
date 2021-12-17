@@ -3,6 +3,7 @@
 const sg = SheetGenerator({
   clefs: { treble: true, bass: true },
   timeSignatures: { upper: 2, lower: 4 },
+  numStaffs: 2,
 });
 sg.makeSheet();
 sg.enableEditing(true);

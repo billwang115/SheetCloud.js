@@ -13,6 +13,7 @@ const SheetGenerator = (options) => {
     lower: 4,
   };
   _self.editingEnabled = false;
+  _self.numStaffs = 1;
 
   //private variables
   let mainSheet = document.createElement(null);
@@ -23,10 +24,16 @@ const SheetGenerator = (options) => {
   _self.makeSheet = () => {
     setVariables();
 
-    const staff = setStaffs();
     mainSheet = document.createElement("div");
     mainSheet.className = "sheet";
-    mainSheet.appendChild(staff);
+    for (let i = 0; i < _self.numStaffs; i++) {
+      const staff = setStaff();
+      mainSheet.appendChild(staff);
+      const sheetSpace = document.createElement("div");
+      sheetSpace.className = "sheetSpace";
+      mainSheet.appendChild(sheetSpace);
+    }
+
     setClefs();
     setTime();
 
@@ -54,9 +61,10 @@ const SheetGenerator = (options) => {
       ..._self.timeSignatures,
       ...options.timeSignatures,
     };
+    _self.numStaffs = options.numStaffs ? options.numStaffs : _self.numStaffs;
   };
 
-  const setStaffs = () => {
+  const setStaff = () => {
     const grandStaff = document.createElement("div");
     grandStaff.className = "grandStaff";
     const staff = document.createElement("div");
