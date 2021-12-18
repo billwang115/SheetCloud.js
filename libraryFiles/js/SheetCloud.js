@@ -333,6 +333,10 @@ const SheetGenerator = (options) => {
       utilOptions.forEach((element) => {
         element.onmousedown = onMouseDown;
       });
+
+      placedItems.forEach((element) => {
+        element.onmousedown = onMouseDown;
+      });
     }
   };
 
@@ -487,7 +491,6 @@ const SheetGenerator = (options) => {
         staff.appendChild(icon);
 
         placedItems.push(icon);
-        icon.onmousedown = onMouseDown;
       });
     }
   };
