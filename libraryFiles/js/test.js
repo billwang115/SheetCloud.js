@@ -66,14 +66,14 @@ const testNotes = [
   },
 ];
 
-const sg = SheetGenerator({
+const sg = SheetGenerator();
+sg.makeSheet({
   clefs: { treble: true, bass: true },
   timeSignatures: { upper: 2, lower: 4 },
   numStaffs: 2,
   tempo: 120,
   items: testNotes,
 });
-sg.makeSheet();
 sg.enableEditing(true);
 const sheetContainer = document.createElement("div");
 sheetContainer.style = "width:85%; margin: 10px auto";
