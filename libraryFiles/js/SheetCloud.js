@@ -20,6 +20,7 @@ const SheetGenerator = (options) => {
   let mainSheet = document.createElement(null);
   let notesOptions = [];
   let placedNotes = [];
+  let utilOptions = [];
 
   // functions
   _self.makeSheet = () => {
@@ -55,8 +56,18 @@ const SheetGenerator = (options) => {
   _self.enableEditing = (enabled) => {
     if (enabled) {
       _self.editingEnabled = true;
-      makeNotesList();
-      enableNotesDragging();
+      const notesList = makeNotesList();
+      const utilsList = makeUtilsList();
+      enableDragging();
+
+      const listView = document.createElement("div");
+      listView.className = "listView";
+      listView.appendChild(notesList);
+      const listSpace = document.createElement("div");
+      listSpace.style = "height:30px";
+      listView.appendChild(listSpace);
+      listView.appendChild(utilsList);
+      _self.mainView.appendChild(listView);
     } else {
       _self.editingEnabled = false;
     }
@@ -210,24 +221,26 @@ const SheetGenerator = (options) => {
     }
   };
 
-  const getNotesListElement = () => {
-    const listsContainer = document.createElement("div");
-    listsContainer.className = "notesListContainer ";
-    const heading = document.createElement("h3");
-    heading.innerText = "Music Notes";
-    heading.className = "notesListHeading";
-    listsContainer.appendChild(heading);
+  const makeNotesList = () => {
+    if (mainSheet !== null) {
+      const listsContainer = document.createElement("div");
+      listsContainer.className = "notesListContainer";
+      const heading = document.createElement("h3");
+      heading.innerText = "Music Notes";
+      heading.className = "notesListHeading";
+      listsContainer.appendChild(heading);
 
-    const listsElement = document.createElement("div");
-    listsElement.className = "notesList";
-    listsContainer.appendChild(listsElement);
+      const listsElement = document.createElement("div");
+      listsElement.className = "notesList";
+      listsContainer.appendChild(listsElement);
 
-    const list = generateNotesListsIcons(loadListsIcons());
-    list.forEach((element) => {
-      listsElement.appendChild(element);
-    });
+      const list = generateNotesListsIcons(loadListsIcons());
+      list.forEach((element) => {
+        listsElement.appendChild(element);
+      });
 
-    return listsContainer;
+      return listsContainer;
+    }
   };
 
   const loadListsIcons = () => {
@@ -279,14 +292,13 @@ const SheetGenerator = (options) => {
     return listRows;
   };
 
-  const makeNotesList = () => {
-    const notesElement = getNotesListElement();
-    mainSheet !== null && _self.mainView.appendChild(notesElement);
-  };
-
-  const enableNotesDragging = () => {
+  const enableDragging = () => {
     if (_self.editingEnabled) {
       notesOptions.forEach((element) => {
+        element.onmousedown = onMouseDown;
+      });
+
+      utilOptions.forEach((element) => {
         element.onmousedown = onMouseDown;
       });
     }
@@ -371,6 +383,46 @@ const SheetGenerator = (options) => {
 
       return !foundSpot;
     });
+  };
+
+  const makeUtilsList = () => {
+    if (mainSheet !== null) {
+      const listsContainer = document.createElement("div");
+      listsContainer.className = "notesListContainer";
+      const heading = document.createElement("h3");
+      heading.innerText = "Utilities";
+      heading.className = "notesListHeading";
+      listsContainer.appendChild(heading);
+
+      const listsElement = document.createElement("div");
+      listsElement.className = "notesList";
+      listsContainer.appendChild(listsElement);
+
+      const list = generateUtilsListsIcons();
+      list.forEach((element) => {
+        listsElement.appendChild(element);
+      });
+
+      return listsContainer;
+    }
+  };
+
+  const generateUtilsListsIcons = () => {
+    const bar = document.createElement("div");
+    bar.className = "staffBar";
+    const barContainer = document.createElement("div");
+    barContainer.className = "staffBarContainer";
+    barContainer.appendChild(bar);
+
+    utilOptions = [barContainer].flat();
+
+    const rowItem = document.createElement("div");
+    rowItem.className = "notesListRowItem";
+    rowItem.appendChild(barContainer);
+    const row = document.createElement("div");
+    row.className = "notesListRow";
+    row.appendChild(rowItem);
+    return [rowItem].flat();
   };
 
   return _self;
