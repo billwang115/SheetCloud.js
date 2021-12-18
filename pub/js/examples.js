@@ -1,20 +1,24 @@
 /* Usage of js library */
 "use strict";
-const sg = SheetGenerator({
+
+const body = document.querySelector("body");
+
+/* first example */
+const sg = SheetGenerator();
+sg.makeSheet({
   clefs: {
     treble: true,
     bass: false,
   },
   timeSignatures: {
-    upper: 4,
+    upper: 2,
     lower: 4,
   },
+  numStaffs: 1,
 });
-sg.makeSheet();
-sg.enableEditing(true);
 const sheetContainer = document.createElement("div");
-sheetContainer.style = "width:85%; margin: 10px auto";
+sheetContainer.style = "width:85%; max-width:1150px; margin: 75px auto;";
 sheetContainer.appendChild(sg.mainView);
 
-const body = document.querySelector("body");
-body.appendChild(sheetContainer);
+const introSection = body.querySelector(".introSection");
+introSection.appendChild(sheetContainer);

@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Lato", sans-serif;
+}
+
+/*intro section styles*/
+.introSection {
+  padding: 35px 0px;
+  background-color: #f3faff;
+  text-align: center;
+}
+
+.pageHeading {
+  font-size: 58px;
+  line-height: 76px;
+  font-weight: 900;
+  color: #263238;
+}
+
+.subHeadingContainer {
+  width: 55%;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 35px;
+}
+
+.subHeading {
+  font-size: 20px;
+  line-height: 30px;
+  color: #263238;
+}
+
+.docsButton {
+  border: 1px solid #263238;
+  background-color: #ffa24d;
+  box-shadow: 0px 1px 4px #263238;
+  color: #263238;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 10px 30px;
+  min-width: 190px;
+  cursor: pointer;
+  letter-spacing: 0.15px;
+}
+
+/*example 1 section styles */
+.example1Section {
+  background-color: #f9f9fa;
+}
