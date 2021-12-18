@@ -100,8 +100,6 @@
       configuration.numStaffs = _self.numStaffs;
       configuration.tempo = _self.tempo;
 
-      console.log(configuration);
-
       return configuration;
     };
 

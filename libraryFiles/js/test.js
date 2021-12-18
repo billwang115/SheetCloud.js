@@ -82,6 +82,6 @@ const body = document.querySelector("body");
 body.appendChild(sheetContainer);
 
 const saveButton = document.createElement("button");
-saveButton.onclick = sg.saveSheet;
+saveButton.onclick = () => console.log(sg.saveSheet());
 saveButton.innerText = "save";
 body.appendChild(saveButton);
