@@ -19,7 +19,7 @@ const SheetGenerator = (options) => {
   //private variables
   let mainSheet = document.createElement(null);
   let notesOptions = [];
-  let placedNotes = [];
+  let placedItems = [];
   let utilOptions = [];
 
   // functions
@@ -46,6 +46,8 @@ const SheetGenerator = (options) => {
     _self.timeSignatures && setTime();
     _self.tempo && setTempo();
 
+    handleImportedNotes();
+
     const mainView = document.createElement("div");
     mainView.className = "mainView";
     mainView.appendChild(sheetContainer);
@@ -71,6 +73,35 @@ const SheetGenerator = (options) => {
     } else {
       _self.editingEnabled = false;
     }
+  };
+
+  _self.saveSheet = () => {
+    const configuration = { items: [] };
+    placedItems.forEach((element) => {
+      const staff = element.parentElement;
+      const grandStaff = staff.parentElement;
+      const staffIndex = [...grandStaff.children].indexOf(staff); //inspired by https://stackoverflow.com/questions/11761881/javascript-dom-find-element-index-in-container
+      const grandStaffIndex = [...mainSheet.children].indexOf(grandStaff);
+
+      const formattedNote = {
+        type: element.name,
+        positionLeft: element.style.left,
+        positionTop: element.style.top,
+        staffIndex: staffIndex,
+        grandStaffIndex: grandStaffIndex,
+      };
+
+      configuration.items.push(formattedNote);
+    });
+
+    configuration.clefs = _self.clefs;
+    configuration.timeSignatures = _self.timeSignatures;
+    configuration.numStaffs = _self.numStaffs;
+    configuration.tempo = _self.tempo;
+
+    console.log(configuration);
+
+    return configuration;
   };
 
   // private functions
@@ -262,6 +293,7 @@ const SheetGenerator = (options) => {
       const icon = document.createElement("img");
       icon.src = value;
       icon.alt = key;
+      icon.setAttribute("name", key);
       icon.draggable = false;
       icon.className = "notesListIcon";
       return icon;
@@ -317,9 +349,9 @@ const SheetGenerator = (options) => {
     floatingImg.style.left = event.pageX - shiftX + "px";
     floatingImg.style.top = event.pageY - shiftY + "px";
 
-    if (placedNotes.includes(currentImg)) {
+    if (placedItems.includes(currentImg)) {
       //remove old image if it was already placed on the grid
-      placedNotes = placedNotes.filter((note) => note !== currentImg);
+      placedItems = placedItems.filter((note) => note !== currentImg);
       currentImg.parentNode.removeChild(currentImg);
     }
 
@@ -372,7 +404,7 @@ const SheetGenerator = (options) => {
             parseFloat(staffElementTop) +
             "px";
           newNote.onmousedown = onMouseDown;
-          placedNotes.push(newNote);
+          placedItems.push(newNote);
           element.appendChild(newNote);
           foundSpot = true;
           return false;
@@ -408,21 +440,56 @@ const SheetGenerator = (options) => {
   };
 
   const generateUtilsListsIcons = () => {
-    const bar = document.createElement("div");
+    const bar = document.createElement("img");
+    bar.src = "js/assets/measure_line.png";
+    bar.alt = "staffBar";
     bar.className = "staffBar";
-    const barContainer = document.createElement("div");
-    barContainer.className = "staffBarContainer";
-    barContainer.appendChild(bar);
+    bar.setAttribute("name", "staffBar");
+    bar.draggable = false;
 
-    utilOptions = [barContainer].flat();
+    utilOptions = [bar].flat();
 
     const rowItem = document.createElement("div");
     rowItem.className = "notesListRowItem";
-    rowItem.appendChild(barContainer);
+    rowItem.appendChild(bar);
     const row = document.createElement("div");
     row.className = "notesListRow";
     row.appendChild(rowItem);
     return [rowItem].flat();
+  };
+
+  const handleImportedNotes = () => {
+    const importedItems = options.items;
+    if (importedItems) {
+      const icons = loadListsIcons();
+      importedItems.forEach((item) => {
+        const icon = document.createElement("img");
+        if (item.type === "staffBar") {
+          icon.src = "js/assets/measure_line.png";
+          icon.className = "staffBar";
+        } else {
+          icon.src = icons[item.type];
+          icon.className = "notesListIcon";
+        }
+
+        icon.alt = item.type;
+        icon.setAttribute("name", item.type);
+        icon.draggable = false;
+
+        icon.style = "position:absolute; z-index: 999;";
+        icon.style.left = item.positionLeft;
+        icon.style.top = item.positionTop;
+
+        const grandStaff = Array.from(mainSheet.childNodes)[
+          item.grandStaffIndex
+        ];
+        const staff = Array.from(grandStaff.childNodes)[item.staffIndex];
+        staff.appendChild(icon);
+
+        placedItems.push(icon);
+        icon.onmousedown = onMouseDown;
+      });
+    }
   };
 
   return _self;

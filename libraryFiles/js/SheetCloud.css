@@ -162,15 +162,12 @@
 }
 
 .staffBar {
-  border-left: 1px solid black;
   height: 69px;
-  width: 1px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
-.staffBarContainer {
-  padding: 0px 15px;
-}
-
-.staffBarContainer:hover {
+.staffBar:hover {
   cursor: pointer;
 }
