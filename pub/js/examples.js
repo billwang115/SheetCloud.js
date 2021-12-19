@@ -131,3 +131,26 @@ sheetContainer.appendChild(sg.mainView);
 
 const introSection = body.querySelector(".introSection");
 introSection.appendChild(sheetContainer);
+
+/*Example 1*/
+const sgExample1 = SheetGenerator();
+sgExample1.makeSheet({
+  clefs: {
+    treble: true,
+    bass: true,
+  },
+  timeSignatures: {
+    upper: 2,
+    lower: 4,
+  },
+  tempo: 110,
+  numStaffs: 1,
+  items: [],
+});
+sgExample1.enableEditing(true);
+const sheetContainerEx1 = document.createElement("div");
+sheetContainerEx1.style = "width:85%; max-width:1300px; margin: 25px auto;";
+sheetContainerEx1.appendChild(sgExample1.mainView);
+
+const example1Section = body.querySelector(".example1Section");
+example1Section.appendChild(sheetContainerEx1);
