@@ -401,13 +401,9 @@
           ) {
             const newNote = floatingNote.cloneNode(true);
             newNote.style.left =
-              parseFloat(floatingNote.style.left) -
-              parseFloat(staffElementLeft) +
-              "px";
+              parseFloat(floatingNoteX) - parseFloat(staffElementLeft) + "px";
             newNote.style.top =
-              parseFloat(floatingNote.style.top) -
-              parseFloat(staffElementTop) +
-              "px";
+              parseFloat(floatingNoteY) - parseFloat(staffElementTop) + "px";
             newNote.onmousedown = onMouseDown;
             placedItems.push(newNote);
             element.appendChild(newNote);
