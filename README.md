@@ -42,8 +42,10 @@ Check out the Documentation : https://warm-bayou-62373.herokuapp.com/documentati
           <code class="codeText">
             const sg = SheetGenerator();
             <br />
+            <br />
             sg.makeSheet({ clefs: { treble: true, bass: true }, timeSignatures:
             { upper: 2, lower: 4 }, numStaffs: 1, tempo: 120, items: [] });
+            <br />
             <br />
             const sheetHTMLElement = sg.mainView; &nbsp; &nbsp;//sg.mainView is
             the html music sheet that can be inserted into your html page
