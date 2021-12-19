@@ -62,3 +62,10 @@ body {
   color: #263238;
   margin: 15px 0px;
 }
+
+/*example 2 section styles */
+.example2Section {
+  background-color: #f3faff;
+  text-align: center;
+  padding: 35px 0px;
+}

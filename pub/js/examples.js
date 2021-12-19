@@ -149,8 +149,130 @@ sgExample1.makeSheet({
 });
 sgExample1.enableEditing(true);
 const sheetContainerEx1 = document.createElement("div");
-sheetContainerEx1.style = "width:85%; max-width:1300px; margin: 25px auto;";
+sheetContainerEx1.style = "width:85%; max-width:1300px; margin: 0px auto;";
 sheetContainerEx1.appendChild(sgExample1.mainView);
 
 const example1Section = body.querySelector(".example1Section");
 example1Section.appendChild(sheetContainerEx1);
+
+const codeUsedSectionStyle =
+  "text-align:left; width:85%; max-width:1000px; margin:60px auto 20px auto";
+const codeUsedHeaderStyle = "font-size:22px; line-height:26px; margin:0px;";
+const codeUsedContainerStyle =
+  "display: block;overflow-x: auto;color: #263238;background: #fff;border: solid 1px #e1e4e5;padding: 12px 18px;margin: 24px 0px;";
+const codeStyle = "font-size: 16px;line-height: 20px;";
+
+const codeUsedEx1 = document.createElement("div");
+codeUsedEx1.style = codeUsedSectionStyle;
+const codeUsedEx1Header = document.createElement("h2");
+codeUsedEx1Header.style = codeUsedHeaderStyle;
+codeUsedEx1Header.innerText = "Code used to generate example";
+codeUsedEx1.appendChild(codeUsedEx1Header);
+
+const codeContainerEx1 = document.createElement("div");
+codeContainerEx1.style = codeUsedContainerStyle;
+const codeEx1 = document.createElement("code");
+codeEx1.style = codeStyle;
+codeEx1.innerHTML =
+  'const sgExample1 = SheetGenerator(); <br/> sgExample1.makeSheet({clefs: {treble: true,bass: true},timeSignatures: {upper: 2,lower: 4,},tempo: 110,numStaffs: 1,items: []}); <br/> sgExample1.enableEditing(true); <br/> const sheetContainerEx1 = document.createElement("div"); <br/> sheetContainerEx1.style = "width:85%; max-width:1300px; margin: 0px auto;"; <br/> sheetContainerEx1.appendChild(sgExample1.mainView);';
+
+codeContainerEx1.appendChild(codeEx1);
+codeUsedEx1.appendChild(codeContainerEx1);
+
+example1Section.appendChild(codeUsedEx1);
+
+/*Example 2*/
+const testNotes2 = [
+  {
+    type: "wholeNote",
+    positionLeft: "387.547px",
+    positionTop: "33.7815px",
+    staffIndex: 0,
+    grandStaffIndex: 0,
+  },
+  {
+    type: "wholeNote",
+    positionLeft: "488.547px",
+    positionTop: "37.7815px",
+    staffIndex: 2,
+    grandStaffIndex: 0,
+  },
+  {
+    type: "halfNote",
+    positionLeft: "616.281px",
+    positionTop: "-18.0625px",
+    staffIndex: 0,
+    grandStaffIndex: 2,
+  },
+  {
+    type: "sixteenthNote",
+    positionLeft: "461.047px",
+    positionTop: "7.4065px",
+    staffIndex: 2,
+    grandStaffIndex: 2,
+  },
+  {
+    type: "staffBar",
+    positionLeft: "374.547px",
+    positionTop: "0.9375px",
+    staffIndex: 0,
+    grandStaffIndex: 2,
+  },
+  {
+    type: "eighthNote",
+    positionLeft: "210px",
+    positionTop: "4.9065px",
+    staffIndex: 2,
+    grandStaffIndex: 2,
+  },
+  {
+    type: "staffBar",
+    positionLeft: "575.547px",
+    positionTop: "0.9375px",
+    staffIndex: 2,
+    grandStaffIndex: 2,
+  },
+  {
+    type: "sixteenthNote",
+    positionLeft: "617.047px",
+    positionTop: "4.4065px",
+    staffIndex: 2,
+    grandStaffIndex: 0,
+  },
+  {
+    type: "quarterNote",
+    positionLeft: "491.094px",
+    positionTop: "9.9215px",
+    staffIndex: 0,
+    grandStaffIndex: 0,
+  },
+];
+
+const sgExample2 = SheetGenerator();
+sgExample2.makeSheet({
+  clefs: { treble: true, bass: true },
+  timeSignatures: { upper: 2, lower: 4 },
+  numStaffs: 2,
+  tempo: 120,
+  items: testNotes2,
+});
+sgExample2.enableEditing(true);
+const sheetContainerEx2 = document.createElement("div");
+sheetContainerEx2.style = "width:85%; max-width:1300px; margin: 0px auto;";
+sheetContainerEx2.appendChild(sgExample2.mainView);
+
+const example2Section = body.querySelector(".example2Section");
+example2Section.appendChild(sheetContainerEx2);
+
+const configurationText = document.createElement("div");
+const appendText = (text) => {
+  configurationText.innerText = text;
+};
+
+const saveButton = document.createElement("button");
+saveButton.onclick = () => appendText(JSON.stringify(sgExample2.saveSheet()));
+saveButton.innerText = "save";
+saveButton.style =
+  "text-align:center; margin: auto border: 1px solid #263238;background-color: lightgreen;box-shadow: 0px 1px 4px #263238;color: #263238;border-radius: 16px;font-weight: 600;font-size: 18px;line-height: 24px;padding: 10px 30px;min-width: 190px;cursor: pointer;letter-spacing: 0.15px;color: #263238;";
+example2Section.appendChild(saveButton);
+example2Section.appendChild(configurationText);
