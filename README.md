@@ -39,8 +39,8 @@ Check out the Documentation : https://warm-bayou-62373.herokuapp.com/documentati
           library calls:
         </p>
         <div class="codeBlock">
-          <code class="codeText"
-            >const sg = SheetGenerator();
+          <code class="codeText">
+            const sg = SheetGenerator();
             <br />
             sg.makeSheet({ clefs: { treble: true, bass: true }, timeSignatures:
             { upper: 2, lower: 4 }, numStaffs: 1, tempo: 120, items: [] });
