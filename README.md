@@ -28,7 +28,9 @@ Check out the Documentation : https://warm-bayou-62373.herokuapp.com/documentati
           <code class="codeText"
             >&lt;script defer type="text/javascript"
             src="js/SheetCloud.js"&gt;&lt;/script&gt;
-            <br />
+            </code>
+            <br/>
+            <code>
             &lt;link rel="stylesheet" type="text/css" href="js/SheetCloud.css"
             /&gt;
           </code>
@@ -41,10 +43,14 @@ Check out the Documentation : https://warm-bayou-62373.herokuapp.com/documentati
         <div class="codeBlock">
           <code class="codeText">
             const sg = SheetGenerator();
+            </code>
             <br />
+            <code>
             sg.makeSheet({ clefs: { treble: true, bass: true }, timeSignatures:
             { upper: 2, lower: 4 }, numStaffs: 1, tempo: 120, items: [] });
+            </code>
             <br />
+            <code>
             const sheetHTMLElement = sg.mainView; &nbsp; &nbsp;//sg.mainView is
             the html music sheet that can be inserted into your html page
           </code>
