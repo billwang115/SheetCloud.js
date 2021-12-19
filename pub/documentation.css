@@ -11,6 +11,7 @@ body {
   width: 90%;
   margin: auto;
   max-width: 1140px;
+  padding-bottom: 40px;
 }
 
 /* intro Section */
@@ -70,4 +71,25 @@ body {
 .codeText {
   font-size: 16px;
   line-height: 20px;
+}
+
+.sectionSubheading {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+  color: #263238;
+  margin: 35px 0px 10px 0px;
+}
+
+.sectionSubText {
+  font-size: 18px;
+  line-height: 24px;
+  color: #263238;
+}
+
+.sectionPropertyHeading {
+  font-size: 20px;
+  line-height: 26px;
+  color: #263238;
+  margin: 10px 0px;
 }
