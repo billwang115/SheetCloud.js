@@ -1,8 +1,6 @@
 # SheetCloud.js
 
-SheetCloud
-
-- Edit sheet music directly in your website
+Edit sheet music directly in your website
 
 Check out the Landing page : https://warm-bayou-62373.herokuapp.com/
 
